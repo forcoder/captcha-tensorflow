@@ -1,19 +1,21 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
 """
 参考文章：http://blog.topspeedsnail.com/archives/10858
 """
 import tensorflow as tf
 
-from capt.cfg import MAX_CAPTCHA, CHAR_SET_LEN, tb_log_path, save_model
-from capt.cnn_sys import crack_captcha_cnn, Y, keep_prob, X
-from capt.data_iter import get_next_batch
+from cfg import MAX_CAPTCHA, CHAR_SET_LEN, tb_log_path, save_model
+from cnn_sys import crack_ha_cnn, Y, keep_prob, X
+from data_iter import get_next_batch
 
 
-def train_crack_captcha_cnn():
+def train_crack_ha_cnn():
     """
     训练模型
     :return:
     """
-    output = crack_captcha_cnn()
+    output = crack_ha_cnn()
     predict = tf.reshape(output, [-1, MAX_CAPTCHA, CHAR_SET_LEN])  # 36行，4列
     label = tf.reshape(Y, [-1, MAX_CAPTCHA, CHAR_SET_LEN])
 
@@ -35,10 +37,12 @@ def train_crack_captcha_cnn():
     tf.summary.scalar('my_accuracy', accuracy)
 
     saver = tf.train.Saver()  # 将训练过程进行保存
-
+    tf.device("/gpu:0")
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
     sess = tf.InteractiveSession(
         config=tf.ConfigProto(
-            log_device_placement=False
+            log_device_placement=False,
+	    gpu_options=gpu_options
         )
     )
 
@@ -68,7 +72,7 @@ def train_crack_captcha_cnn():
         print(step, 'acc---------------------------------\t', acc)
 
         # 终止条件
-        if acc > 0.98:
+        if acc > 0.9:
             break
 
         # 启用监控 tensor board
@@ -77,6 +81,6 @@ def train_crack_captcha_cnn():
 
 
 if __name__ == '__main__':
-    train_crack_captcha_cnn()
+    train_crack_ha_cnn()
     print('end')
     pass

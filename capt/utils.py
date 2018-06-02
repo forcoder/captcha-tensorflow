@@ -1,6 +1,8 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
 import numpy as np
 
-from capt.cfg import MAX_CAPTCHA, CHAR_SET_LEN
+from cfg import MAX_CAPTCHA, CHAR_SET_LEN
 
 
 def char2pos(c):
@@ -85,7 +87,7 @@ def vec2text(vec):
 
         char_code = pos2char(char_idx)
 
-        text.append(chr(char_code))
+        text.append(char_code)
     return "".join(text)
 
 

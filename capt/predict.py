@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
 """
 专门做预测的
 """
@@ -6,10 +8,10 @@ import time
 import numpy as np
 import tensorflow as tf
 
-from capt.cfg import MAX_CAPTCHA, CHAR_SET_LEN, model_path
-from capt.cnn_sys import crack_captcha_cnn, X, keep_prob
-from capt.gen_captcha import wrap_gen_captcha_text_and_image
-from capt.utils import convert2gray, vec2text
+from cfg import MAX_CAPTCHA, CHAR_SET_LEN, model_path
+from cnn_sys import crack_captcha_cnn, X, keep_prob
+from gen_captcha import wrap_gen_captcha_text_and_image
+from utils import convert2gray, vec2text
 
 
 def hack_function(sess, predict, captcha_image):
@@ -39,7 +41,6 @@ def batch_hack_captcha():
 
     # 定义预测计算图
     output = crack_captcha_cnn()
-    predict = tf.argmax(tf.reshape(output, [-1, MAX_CAPTCHA, CHAR_SET_LEN]), 2)
 
     saver = tf.train.Saver()
     with tf.Session() as sess:
@@ -50,6 +51,7 @@ def batch_hack_captcha():
         task_cnt = 1000
         right_cnt = 0
         for i in range(task_cnt):
+    	    predict = tf.argmax(tf.reshape(output, [-1, MAX_CAPTCHA, CHAR_SET_LEN]), 2)
             text, image = wrap_gen_captcha_text_and_image()
             image = convert2gray(image)
             image = image.flatten() / 255
