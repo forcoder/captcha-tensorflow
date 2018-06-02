@@ -1,4 +1,7 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
 # 验证码中的字符, 就不用汉字了
+import os
 from os.path import join
 
 number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -23,9 +26,9 @@ CHAR_SET_LEN = len(gen_char_set)
 
 print('CHAR_SET_LEN:', CHAR_SET_LEN)
 
-home_root = '/home/harmo'  # 在不同操作系统下面Home目录不一样
-workspace = join(home_root, 'work/crack/my-capt-data/capt-python-36')  # 用于工作的训练数据集
-model_path = join(home_root, 'work/crack/model')
+cur_dir = os.path.abspath(os.path.dirname(__file__))
+workspace = join(cur_dir, 'my-data/python-36')  # 用于工作的训练数据集
+model_path = join(cur_dir, 'model')
 model_tag = 'crack_capcha.model'
 save_model = join(model_path, model_tag)
 
