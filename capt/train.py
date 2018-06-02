@@ -5,17 +5,17 @@
 """
 import tensorflow as tf
 
-from cfg import MAX_CAPTCHA, CHAR_SET_LEN, tb_log_path, save_model
-from cnn_sys import crack_ha_cnn, Y, keep_prob, X
+from cfg import MAX_CAPTCHA, CHAR_SET_LEN, tb_log_path, save_model, model_path
+from cnn_sys import crack_captcha_cnn, Y, keep_prob, X
 from data_iter import get_next_batch
 
 
-def train_crack_ha_cnn():
+def train_crack_captcha_cnn():
     """
     训练模型
     :return:
     """
-    output = crack_ha_cnn()
+    output = crack_captcha_cnn()
     predict = tf.reshape(output, [-1, MAX_CAPTCHA, CHAR_SET_LEN])  # 36行，4列
     label = tf.reshape(Y, [-1, MAX_CAPTCHA, CHAR_SET_LEN])
 
@@ -46,6 +46,7 @@ def train_crack_ha_cnn():
         )
     )
 
+    saver.restore(sess, tf.train.latest_checkpoint(model_path))
     sess.run(tf.global_variables_initializer())
     merged = tf.summary.merge_all()
     writer = tf.summary.FileWriter(tb_log_path, sess.graph)
@@ -72,7 +73,7 @@ def train_crack_ha_cnn():
         print(step, 'acc---------------------------------\t', acc)
 
         # 终止条件
-        if acc > 0.9:
+        if acc > 0.98:
             break
 
         # 启用监控 tensor board
@@ -81,6 +82,6 @@ def train_crack_ha_cnn():
 
 
 if __name__ == '__main__':
-    train_crack_ha_cnn()
+    train_crack_captcha_cnn()
     print('end')
     pass

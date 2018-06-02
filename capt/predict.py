@@ -48,7 +48,7 @@ def batch_hack_captcha():
         saver.restore(sess, tf.train.latest_checkpoint(model_path))
 
         stime = time.time()
-        task_cnt = 1000
+        task_cnt = 100
         right_cnt = 0
         for i in range(task_cnt):
     	    predict = tf.argmax(tf.reshape(output, [-1, MAX_CAPTCHA, CHAR_SET_LEN]), 2)
