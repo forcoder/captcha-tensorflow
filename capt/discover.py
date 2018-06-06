@@ -23,6 +23,7 @@ def discern( imgFile ):
 
             image = Image.open("image/%s.png" % (i+1))
             image = image.resize((160,60))
+            image.save("/tmp/big/%s.png" % (i+1))
             image = np.array(image)
             image = convert2gray(image)
             image = image.flatten() / 255

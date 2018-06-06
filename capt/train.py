@@ -54,7 +54,7 @@ def train_crack_captcha_cnn():
     step = 0
     while True:
         batch_x, batch_y = get_next_batch(64)  # 64
-        _, loss_ = sess.run([optimizer, loss], feed_dict={X: batch_x, Y: batch_y, keep_prob: 0.95})
+        _, loss_ = sess.run([optimizer, loss], feed_dict={X: batch_x, Y: batch_y, keep_prob: 0.7})
         print(step, 'loss:\t', loss_)
 
         step += 1
